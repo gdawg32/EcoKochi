@@ -1,0 +1,53 @@
+{% extends "core/base.html" %}
+{% block content %}
+<div class="container mx-auto p-6">
+    <h1 class="text-3xl font-bold mb-4">Welcome, {{ ward_manager }}</h1>
+    <p class="text-lg">Ward: <strong>{{ ward.ward_no }} - {{ ward.name }}</strong></p>
+
+    <div class="flex justify-end mb-4">
+        <a href="{% url 'ward_manager_logout' %}" class="btn btn-error">Logout</a>
+    </div>
+
+    <div class="mt-6">
+        <h2 class="text-2xl font-semibold mb-3">Manage Ward Operations</h2>
+        <p class="text-base">
+            Use the tools below to manage your ward's waste management system efficiently.
+        </p>
+
+        <div class="mt-8">
+            <h3 class="text-xl font-semibold mb-3">Add a New Waste Collector</h3>
+            <form method="POST">
+                {% csrf_token %}
+                <div class="mb-4">
+                    <label for="name" class="block font-medium">Full Name</label>
+                    <input type="text" name="name" id="name" class="input input-bordered w-full" required>
+                </div>
+                <div class="mb-4">
+                    <label for="username" class="block font-medium">Username</label>
+                    <input type="text" name="username" id="username" class="input input-bordered w-full" required>
+                </div>
+                <div class="mb-4">
+                    <label for="password" class="block font-medium">Password</label>
+                    <input type="password" name="password" id="password" class="input input-bordered w-full" required>
+                </div>
+                <div class="mb-4">
+                    <label for="phone_number" class="block font-medium">Phone Number</label>
+                    <input type="text" name="phone_number" id="phone_number" class="input input-bordered w-full">
+                </div>
+                <button type="submit" class="btn btn-primary">Create Waste Collector</button>
+            </form>
+        </div>
+
+        <div class="mt-8">
+            <h3 class="text-xl font-semibold mb-3">Register a New Resident</h3>
+            <a href="{% url 'register_resident' %}" class="btn btn-secondary">Register Resident</a>
+        </div>
+
+        <div class="mt-8">
+            <h3 class="text-xl font-semibold mb-3">Manage Waste Collection Schedules</h3>
+            <a href="{% url 'manage_schedules' %}" class="btn btn-secondary">Manage Schedules</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

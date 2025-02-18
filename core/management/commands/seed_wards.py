@@ -1,0 +1,57 @@
+from core.models import Ward
+
+ward_data = [
+    (28, "AMARAVATHY"),     
+    (29, "ISLAND NORTH"),
+    (30, "ISLAND SOUTH"),
+    (31, "VADUTHALA WEST"),
+    (32, "VADUTHALA EAST"),
+    (33, "ELAMAKKARA NORTH"),
+    (34, "PUTHUKKALAVATTAM"),
+    (35, "PONEKKARA"),
+    (36, "KUNNUMPURAM"),
+    (37, "EDAPPALLY"),
+    (38, "DHEVANKULANGARA"),
+    (39, "KARUKAPPILLI"),
+    (40, "MAMANGALAM"),
+    (41, "PADIVATTAM"),
+    (42, "VENNALA"),
+    (43, "PALARIVATTAM"),
+    (44, "KARANAKKODAM"),
+    (45, "THAMMANAM"),
+    (46, "CHAKKARAPARAMBU"),
+    (47, "CHALIKKAVATTAM"),
+    (48, "PONNURUNNI EAST"),
+    (49, "VYTTILA"),
+    (50, "CHAMBAKKARA"),
+    (51, "POONITHURA"),
+    (52, "VYTTILA JANATHA"),
+    (53, "PONNURUNNI"),
+    (54, "ELAMKULAM"),
+    (55, "GIRINAGAR"),
+    (56, "PANAMPILLI NAGAR"),
+    (57, "KADAVANTHRA"),
+    (58, "KONTHURUTHY"),
+    (59, "THEVARA"),
+    (60, "PERUMANUR"),
+    (61, "RAVIPURAM"),
+    (62, "ERNAKULAM SOUTH"),
+    (63, "GANDHI NAGAR"),
+    (64, "KATHRIKADAVU"),
+    (65, "KALOOR SOUTH"),
+    (66, "ERNAKULAM CENTRAL"),
+    (67, "ERNAKULAM NORTH"),
+    (68, "AYYAPPANKAVU"),
+    (69, "THRIKKANARVATTOM"),
+    (70, "KALOOR NORTH"),
+    (71, "ELAMAKKARA SOUTH"),
+    (72, "POTTAKUZHY"),
+    (73, "PACHALAM"),
+    (74, "THATTAZHAM"),
+]
+
+
+for ward_no, ward_name in ward_data:
+    Ward.objects.create(ward_no=ward_no, name=ward_name, location=f"Location of {ward_name}")
+
+print("Wards added successfully!")

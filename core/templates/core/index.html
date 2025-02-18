@@ -1,0 +1,103 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="bg-green-600 text-white flex items-center justify-center py-24 bg-cover bg-center" style="background-image: url('https://preview.redd.it/drove-from-chennai-to-kochi-and-ended-up-falling-for-this-v0-fc415meenu1e1.jpg?width=1080&crop=smart&auto=webp&s=eb3f6831cb3cadb403f11ba0563aaa1d596ff36d');">
+    <div class="text-center">
+        <h1 class="text-4xl md:text-6xl font-bold mb-4">EcoKochi: Smart City Waste Management</h1>
+        <p class="text-xl md:text-2xl mb-6">Revolutionizing waste management for a cleaner, greener future.</p>
+        <a href="#about" class="btn btn-primary text-xl px-6 py-3 rounded-full">Learn More</a>
+    </div>
+</section>
+
+
+<!-- Real-Time Monitoring and Analytics Section -->
+<section class="py-16 bg-gray-100 text-center">
+    <div class="max-w-5xl mx-auto">
+        <h2 class="text-3xl font-semibold mb-8">Real-Time Monitoring and Analytics</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+            <div class="stats shadow-lg">
+                <div class="stat">
+                    <div class="stat-title">Transparency</div>
+                    <div class="stat-value">100%</div>
+                    <div class="stat-desc">Operations Visibility</div>
+                </div>
+            </div>
+            <div class="stats shadow-lg">
+                <div class="stat">
+                    <div class="stat-title">Availability</div>
+                    <div class="stat-value">24/7</div>
+                    <div class="stat-desc">Access EcoKochi Data</div>
+                </div>
+            </div>
+            <div class="stats shadow-lg">
+                <div class="stat">
+                    <div class="stat-title">Accuracy</div>
+                    <div class="stat-value">99.99%</div>
+                    <div class="stat-desc">Data Accuracy</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Eco-Friendly Initiatives Section -->
+<section class="py-16 bg-white text-center">
+    <div class="max-w-5xl mx-auto">
+        <h2 class="text-3xl font-semibold mb-8">Eco-Friendly Initiatives and Sustainability Efforts</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 items-center justify-center">
+            <div class="card bg-white shadow-lg p-6 h-full">
+                <div class="flex items-center">
+                    <img class="w-12 h-12 mr-4" src="https://static.vecteezy.com/system/resources/previews/000/626/625/non_2x/green-leaf-logo-vector.jpg" alt="recycle logo">
+                    <h3 class="text-2xl font-semibold mb-4">Waste Reduction</h3>
+                </div>
+                <p class="h-full">Promote sustainable practices and reduce waste generation.</p>
+            </div>
+            <div class="card bg-white shadow-lg p-6 h-full">
+                <div class="flex items-center">
+                    <img class="w-12 h-12 mr-4" src="https://i.pinimg.com/736x/66/db/cb/66dbcbb7f70864efa5e4e8097e865a28.jpg" alt="compost logo">
+                    <h3 class="text-2xl font-semibold mb-4">Recycling & Composting</h3>
+                </div>
+                <p class="h-full">Encourage and support community recycling and composting efforts.</p>
+            </div>
+            <div class="card bg-white shadow-lg p-6 h-full">
+                <div class="flex items-center">
+                    <img class="w-12 h-12 mr-4" src="https://static.vecteezy.com/system/resources/previews/004/565/798/non_2x/cool-and-modern-logo-for-environmental-conservation-organizations-free-vector.jpg" alt="earth flag logo">
+                    <h3 class="text-2xl font-semibold mb-4">Environmental Awareness</h3>
+                </div>
+                <p class="h-full">Spread awareness and education about the importance of environmental conservation.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Responsive and User-Friendly Mobile App Section -->
+<section class="py-16 bg-yellow-200 text-center">
+    <div class="max-w-5xl mx-auto">
+        <h2 class="text-3xl font-semibold mb-8 text-green-600">EcoKochi's Fun and User-Friendly Mobile App!</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+            <div class="card bg-white rounded-lg shadow-lg p-6">
+                <h3 class="text-2xl font-semibold mb-4 text-purple-600">Waste Reporting</h3>
+                <p class="text-lg text-gray-700">Snap a photo and report waste issues in your community. We'll take care of the rest!</p>
+            </div>
+            <div class="card bg-white rounded-lg shadow-lg p-6">
+                <h3 class="text-2xl font-semibold mb-4 text-blue-600">Real-Time Tracking</h3>
+                <p class="text-lg text-gray-700">Stay on top of collection schedules and waste levels. We'll keep you informed!</p>
+            </div>
+            <div class="card bg-white rounded-lg shadow-lg p-6">
+                <h3 class="text-2xl font-semibold mb-4 text-pink-600">Community Engagement</h3>
+                <p class="text-lg text-gray-700">Join the EcoKochi community and participate in eco-friendly initiatives. Let's make a difference together!</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- Join the Movement Section -->
+<section class="py-16 bg-green-600 text-white text-center">
+    <h2 class="text-3xl font-semibold mb-4">Join the EcoKochi Movement Today</h2>
+    <p class="text-xl mb-8">Be a part of Kochi’s sustainable future by actively participating in waste management.</p>
+    <a href="/register" class="btn btn-success text-xl px-6 py-3 rounded-full">Join the Community</a>
+</section>
+
+{% endblock %}

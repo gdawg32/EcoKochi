@@ -1,0 +1,33 @@
+{% extends "core/base.html" %}
+{% block content %}
+<div class="container mx-auto p-6">
+    <h1 class="text-2xl font-bold mb-4">Manage Waste Collection Schedules</h1>
+    <p class="text-lg">Ward: <strong>{{ ward.name }}</strong></p>
+
+    <h2 class="text-xl font-semibold mt-6">Existing Schedules</h2>
+    <ul class="list-disc pl-6">
+        {% for schedule in schedules %}
+        <li>
+            <strong>{{ schedule.waste_type.name }}</strong> on 
+            <strong>{{ schedule.collection_day }}</strong> from 
+            {{ schedule.start_time|date:"H:i" }} to {{ schedule.end_time|date:"H:i" }}
+            {% if schedule.active %}
+            <span class="text-green-600">(Active)</span>
+            {% else %}
+            <span class="text-red-600">(Inactive)</span>
+            {% endif %}
+            <a href="{% url 'delete_schedule' schedule.id %}" class="text-red-500 ml-4">Delete</a>
+        </li>
+        {% empty %}
+        <li>No schedules available.</li>
+        {% endfor %}
+    </ul>
+
+    <h2 class="text-xl font-semibold mt-6">Add New Schedule</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary mt-4">Add Schedule</button>
+    </form>
+</div>
+{% endblock %}

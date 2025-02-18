@@ -1,0 +1,33 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+<div class="container mx-auto p-6">
+    <h1 class="text-3xl font-bold mb-4">Register Resident</h1>
+    <p class="text-lg">Ward: <strong>{{ ward.ward_no }} - {{ ward.name }}</strong></p>
+
+    <form method="POST" class="space-y-4">
+        {% csrf_token %}
+        <div>
+            <label for="name" class="block text-sm font-medium">Resident Name</label>
+            <input type="text" name="name" id="name" class="input input-bordered w-full" required>
+        </div>
+        <div>
+            <label for="username" class="block text-sm font-medium">Username</label>
+            <input type="text" name="username" id="username" class="input input-bordered w-full" required>
+        </div>
+        <div>
+            <label for="password" class="block text-sm font-medium">Password</label>
+            <input type="password" name="password" id="password" class="input input-bordered w-full" required>
+        </div>
+        <div>
+            <label for="house_number" class="block text-sm font-medium">House Number</label>
+            <input type="text" name="house_number" id="house_number" class="input input-bordered w-full" required>
+        </div>
+        <div>
+            <label for="phone_number" class="block text-sm font-medium">Phone Number</label>
+            <input type="text" name="phone_number" id="phone_number" class="input input-bordered w-full" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Register Resident</button>
+    </form>
+</div>
+{% endblock %}

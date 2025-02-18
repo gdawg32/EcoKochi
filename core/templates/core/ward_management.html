@@ -1,0 +1,64 @@
+{% extends "core/base.html" %}
+{% block content %}
+<div class="container mx-auto p-6">
+    <h1 class="text-2xl font-bold mb-4">Ward Management</h1>
+    
+    {% if error %}
+    <div class="alert alert-error">
+        <span>{{ error }}</span>
+    </div>
+    {% endif %}
+    
+    <h2 class="text-lg font-semibold mb-3">Create a New WardManager</h2>
+    <form method="POST" class="mb-6">
+        {% csrf_token %}
+        <div class="form-control mb-3">
+            <label class="label" for="username">
+                <span class="label-text">Username</span>
+            </label>
+            <input type="text" name="username" id="username" class="input input-bordered" required>
+        </div>
+        <div class="form-control mb-3">
+            <label class="label" for="email">
+                <span class="label-text">Email</span>
+            </label>
+            <input type="email" name="email" id="email" class="input input-bordered" required>
+        </div>
+        <div class="form-control mb-3">
+            <label class="label" for="password">
+                <span class="label-text">Password</span>
+            </label>
+            <input type="password" name="password" id="password" class="input input-bordered" required>
+        </div>
+        <div class="form-control mb-3">
+            <label class="label" for="ward">
+                <span class="label-text">Ward</span>
+            </label>
+            <select name="ward" id="ward" class="select select-bordered" required>
+                {% for ward in wards %}
+                <option value="{{ ward.id }}">{{ ward.ward_no }} - {{ ward.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Create WardManager</button>
+    </form>
+
+    <h2 class="text-lg font-semibold mb-3">Existing Wards</h2>
+    <table class="table w-full border">
+        <thead>
+            <tr>
+                <th>Ward Number</th>
+                <th>Ward Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for ward in wards %}
+            <tr>
+                <td>{{ ward.ward_no }}</td>
+                <td>{{ ward.name }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
