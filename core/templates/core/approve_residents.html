@@ -1,60 +1,35 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Approve Resident Applications</title>
-    <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
-        .actions button {
-            margin-right: 5px;
-        }
-    </style>
-</head>
-<body>
-    <h1>Approve Resident Applications</h1>
-    <table>
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Ward</th>
-                <th>House Number</th>
-                <th>Phone Number</th>
-                <th>Status</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for application in applications %}
-            <tr>
-                <td>{{ application.name }}</td>
-                <td>{{ application.ward.name }}</td>
-                <td>{{ application.house_number }}</td>
-                <td>{{ application.phone_number }}</td>
-                <td>{{ application.get_status_display }}</td>
-                <td class="actions">
-                    <form method="post" action="{% url 'approve_resident' application.id %}" style="display:inline;">
-                        {% csrf_token %}
-                        <button type="submit" style="color: green;">Approve</button>
-                    </form>
-                    <form method="post" action="{% url 'reject_resident' application.id %}" style="display:inline;">
-                        {% csrf_token %}
-                        <button type="submit" style="color: red;">Reject</button>
-                    </form>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</body>
-</html>
+{% extends 'core/base.html' %}
+
+{% block content %}
+<h2>Resident Applications</h2>
+
+<table border="1">
+    <tr>
+        <th>Name</th>
+        <th>House Number</th>
+        <th>Phone</th>
+        <th>Actions</th>
+    </tr>
+    {% for app in applications %}
+    <tr>
+        <td>{{ app.name }}</td>
+        <td>{{ app.house_number }}</td>
+        <td>{{ app.phone_number }}</td>
+        <td>
+            <form action="{% url 'approve_resident' app.id %}" method="POST">
+                {% csrf_token %}
+                <button type="submit">Approve</button>
+            </form>
+            <form action="{% url 'reject_resident' app.id %}" method="POST">
+                {% csrf_token %}
+                <button type="submit" style="background-color: red;">Reject</button>
+            </form>
+        </td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="4">No pending applications.</td></tr>
+    {% endfor %}
+</table>
+
+<a href="{% url 'ward_manager_dashboard' %}">Back to Dashboard</a>
+{% endblock %}

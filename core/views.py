@@ -228,13 +228,15 @@ class GarbageCollectorLoginView(APIView):
 
         if user:
             # Check if the user exists in the WasteCollector model
-            if WasteCollector.objects.filter(user=user).exists():
+            try:
+                collector = WasteCollector.objects.get(user=user)
                 token, _ = Token.objects.get_or_create(user=user)
                 return Response({
                     "message": "Login successful",
-                    "token": token.key
+                    "token": token.key,
+                    "collector_id": collector.id  # ✅ Now returning collector_id
                 }, status=200)
-            else:
+            except WasteCollector.DoesNotExist:
                 return Response({
                     "message": "You are not authorized as a Garbage Collector."
                 }, status=403)
@@ -242,6 +244,7 @@ class GarbageCollectorLoginView(APIView):
         return Response({
             "message": "Invalid username or password."
         }, status=401)
+
 
 class GarbageCollectorLogoutView(APIView):
     def post(self, request):
@@ -362,7 +365,7 @@ class ResidentLoginView(APIView):
 class ResidentSignupView(APIView):
     def post(self, request):
         name = request.data.get("name")
-        ward_id = request.data.get("ward_no")  
+        ward_id = request.data.get("ward_no")
         house_number = request.data.get("house_number")
         phone_number = request.data.get("phone_number")
 
@@ -400,54 +403,67 @@ class WardListView(APIView):
     def get(self, request):
         wards = Ward.objects.all().values("ward_no", "name")
         return Response(wards, status=status.HTTP_200_OK)
-    
+
+@login_required
 def list_resident_applications(request):
-    applications = ResidentApplication.objects.filter(status=ResidentApplication.PENDING)
+
+    # Check if user is a ward manager
+    if not hasattr(request.user, 'ward_manager'):
+        return redirect('ward_manager_dashboard')  # Redirect if not a ward manager
+
+    ward_manager = request.user.ward_manager
+    applications = ResidentApplication.objects.filter(ward=ward_manager.ward, status=ResidentApplication.PENDING)
+
     return render(request, 'core/approve_residents.html', {'applications': applications})
 
 
 @login_required
-@csrf_exempt
 def approve_resident_application(request, application_id):
-    if request.method == "POST":
-        application = get_object_or_404(ResidentApplication, id=application_id)
+    """Approve a resident application (Only ward manager of that ward can approve)."""
 
-        # Create a User with phone_number as username and assign a random password
-        user = User.objects.create_user(
-            username=application.phone_number,
-            password=application.phone_number,  # Use phone number as the password
-        )
+    application = get_object_or_404(ResidentApplication, id=application_id)
 
-        # Create a Resident object
-        Resident.objects.create(
-            user=user,
-            ward=application.ward,
-            name=application.name,
-            house_number=application.house_number,
-            phone_number=application.phone_number,
-            qr_code_string=application.qr_code_string,
-        )
+    # Ensure only the ward manager of the respective ward can approve
+    if request.user.ward_manager.ward != application.ward:
+        return redirect('ward_manager_dashboard')  # Redirect if unauthorized
 
-        # Update application status
-        application.status = ResidentApplication.APPROVED
-        application.reviewed_at = now()
-        application.admin_comments = "Application approved."
-        application.save()
+    # Create user account for the resident
+    user = User.objects.create_user(username=application.phone_number, password=application.phone_number)
 
-        return redirect('list_resident_applications')
+    # Create Resident object
+    Resident.objects.create(
+        user=user,
+        ward=application.ward,
+        name=application.name,
+        house_number=application.house_number,
+        phone_number=application.phone_number,
+        qr_code_string=application.qr_code_string,
+    )
+
+    # Update application status
+    application.status = ResidentApplication.APPROVED
+    application.reviewed_at = now()
+    application.admin_comments = "Application approved by Ward Manager."
+    application.save()
+
+    return redirect('list_resident_applications')
 
 @login_required
-@csrf_exempt
 def reject_resident_application(request, application_id):
-    if request.method == "POST":
-        application = get_object_or_404(ResidentApplication, id=application_id)
-        application.status = ResidentApplication.REJECTED
-        application.reviewed_at = now()
-        application.admin_comments = "Application rejected."
-        application.save()
+    """Reject a resident application (Only ward manager of that ward can reject)."""
 
-        return redirect('list_resident_applications')
-    
+    application = get_object_or_404(ResidentApplication, id=application_id)
+
+    if request.user.ward_manager.ward != application.ward:
+        return redirect('ward_manager_dashboard')
+
+    application.status = ResidentApplication.REJECTED
+    application.reviewed_at = now()
+    application.admin_comments = "Application rejected by Ward Manager."
+    application.save()
+
+    return redirect('list_resident_applications')
+
 
 class WasteCollectionActivityView(APIView):
     permission_classes = [IsAuthenticated]
@@ -574,7 +590,7 @@ class ResidentQRCodeView(APIView):
         try:
             # Get the resident associated with the authenticated user
             resident = Resident.objects.get(user=request.user)
-            
+
             return Response({
                 "qr_code_string": resident.qr_code_string
             }, status=status.HTTP_200_OK)
@@ -672,7 +688,7 @@ class ResidentNotificationView(APIView):
     def patch(self, request, notification_id):
         try:
             notification = Notification.objects.get(
-                id=notification_id, 
+                id=notification_id,
                 resident=request.user.resident
             )
             notification.is_read = True
@@ -722,8 +738,8 @@ class WasteCollectorProfileView(APIView):
         try:
             collector = request.user.waste_collector
             serializer = WasteCollectorProfileSerializer(
-                collector, 
-                data=request.data, 
+                collector,
+                data=request.data,
                 partial=True
             )
             if serializer.is_valid():
@@ -743,26 +759,26 @@ class WasteCollectorRouteView(APIView):
         try:
             collector = request.user.waste_collector
             today = timezone.now().strftime('%A')
-            
+
             # Get today's schedule
             schedule = WasteSchedule.objects.filter(
                 ward=collector.ward,
                 collection_day=today,
                 active=True
             ).first()
-            
+
             # Get all residents in the ward
             residents = Resident.objects.filter(ward=collector.ward)
-            
+
             # Get already collected waste for today
             collected_residents = WasteCollectionActivity.objects.filter(
                 waste_collector=collector,
                 date_time__date=timezone.now().date()
             ).values_list('resident_id', flat=True)
-            
+
             # Separate collected and pending residents
             pending_residents = residents.exclude(id__in=collected_residents)
-            
+
             return Response({
                 'schedule': WasteScheduleSerializer(schedule).data if schedule else None,
                 'pending_collections': ResidentProfileSerializer(pending_residents, many=True).data,
@@ -782,19 +798,19 @@ class WasteCollectorDailyStatusView(APIView):
         try:
             collector = request.user.waste_collector
             today = timezone.now().date()
-            
+
             # Get today's collections
             collections = WasteCollectionActivity.objects.filter(
                 waste_collector=collector,
                 date_time__date=today
             )
-            
+
             metrics = {
                 'total_houses': collections.count(),
                 'total_waste_collected': collections.aggregate(
-                    total=Sum('biodegradable_waste') + 
-                          Sum('recyclable_waste') + 
-                          Sum('non_recyclable_waste') + 
+                    total=Sum('biodegradable_waste') +
+                          Sum('recyclable_waste') +
+                          Sum('non_recyclable_waste') +
                           Sum('hazardous_waste')
                 )['total'] or 0,
                 'biodegradable_total': collections.aggregate(
@@ -811,7 +827,7 @@ class WasteCollectorDailyStatusView(APIView):
                 )['total'] or 0,
                 'collection_date': today
             }
-            
+
             serializer = DailyCollectionMetricsSerializer(metrics)
             return Response(serializer.data)
         except WasteCollector.DoesNotExist:
@@ -843,13 +859,13 @@ class WasteCollectionActivityViewSet(ModelViewSet):
                 resident=resident,
                 date_time__date=timezone.now().date()
             ).exists()
-            
+
             if already_collected:
                 return Response(
                     {"error": "Waste already collected from this resident today"},
                     status=status.HTTP_400_BAD_REQUEST
                 )
-                
+
             return Response({
                 "resident_id": resident.id,
                 "name": resident.name,
@@ -886,33 +902,33 @@ class WasteCollectorEmergencyReportView(APIView):
 
 class QRCodeValidationView(APIView):
     permission_classes = [IsAuthenticated]
-    
+
     def post(self, request):
         serializer = QRValidationSerializer(data=request.data)
         if not serializer.is_valid():
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        
+
         qr_code = serializer.validated_data['qr_code']
         collector_id = serializer.validated_data['collector_id']
         timestamp = serializer.validated_data['timestamp']
-        
+
         # Rate limiting check
         cache_key = f"qr_validation_{collector_id}_{timezone.now().strftime('%Y%m%d%H%M')}"
         request_count = cache.get(cache_key, 0)
-        
+
         if request_count >= getattr(settings, 'QR_VALIDATION_RATE_LIMIT', 60):  # 60 requests per minute
             return Response(
                 {"error": "Rate limit exceeded. Please try again later."},
                 status=status.HTTP_429_TOO_MANY_REQUESTS
             )
-        
+
         # Increment rate limit counter
         cache.set(cache_key, request_count + 1, 60)  # Expires in 60 seconds
-        
+
         try:
             # Verify the collector
             collector = WasteCollector.objects.get(id=collector_id)
-            
+
             # Check if collector is active
             if not collector.active:
                 return Response({
@@ -920,23 +936,23 @@ class QRCodeValidationView(APIView):
                     "message": "Collector account is inactive",
                     "timestamp": timezone.now()
                 }, status=status.HTTP_403_FORBIDDEN)
-            
+
             # Verify the QR code
             resident = Resident.objects.get(qr_code_string=qr_code)
-            
+
             # Check if waste was already collected today
             already_collected = WasteCollectionActivity.objects.filter(
                 resident=resident,
                 date_time__date=timezone.now().date()
             ).exists()
-            
+
             if already_collected:
                 return Response({
                     "is_valid": False,
                     "message": "Waste has already been collected from this resident today",
                     "timestamp": timezone.now()
                 }, status=status.HTTP_400_BAD_REQUEST)
-            
+
             # Check if resident belongs to collector's ward
             if resident.ward != collector.ward:
                 return Response({
@@ -944,30 +960,30 @@ class QRCodeValidationView(APIView):
                     "message": "Resident does not belong to collector's assigned ward",
                     "timestamp": timezone.now()
                 }, status=status.HTTP_400_BAD_REQUEST)
-            
+
             response_data = {
                 "is_valid": True,
                 "resident_details": ResidentProfileSerializer(resident).data,
                 "message": "QR code validated successfully",
                 "timestamp": timezone.now()
             }
-            
+
             return Response(response_data, status=status.HTTP_200_OK)
-            
+
         except WasteCollector.DoesNotExist:
             return Response({
                 "is_valid": False,
                 "message": "Invalid collector ID",
                 "timestamp": timezone.now()
             }, status=status.HTTP_404_NOT_FOUND)
-            
+
         except Resident.DoesNotExist:
             return Response({
                 "is_valid": False,
                 "message": "Invalid QR code",
                 "timestamp": timezone.now()
             }, status=status.HTTP_404_NOT_FOUND)
-        
+
         except Exception as e:
             return Response({
                 "is_valid": False,
@@ -977,7 +993,7 @@ class QRCodeValidationView(APIView):
 
 class SystemStatusView(APIView):
     permission_classes = [IsAuthenticated]
-    
+
     def get(self, request):
         try:
             # Get or create system status
@@ -988,7 +1004,7 @@ class SystemStatusView(APIView):
                     'message': 'System is running normally'
                 }
             )
-            
+
             # Get various system health metrics
             metrics = {
                 'database_connection': self._check_database(),
@@ -996,7 +1012,7 @@ class SystemStatusView(APIView):
                 'storage_space': self._check_storage(),
                 'recent_errors': self._check_recent_errors(),
             }
-            
+
             # Add system uptime and other metrics
             response_data = {
                 'status': SystemStatusSerializer(status_obj).data,
@@ -1004,15 +1020,15 @@ class SystemStatusView(APIView):
                 'api_version': getattr(settings, 'API_VERSION', '1.0'),
                 'timestamp': timezone.now()
             }
-            
+
             return Response(response_data, status=status.HTTP_200_OK)
-            
+
         except Exception as e:
             return Response({
                 'error': 'Error fetching system status',
                 'detail': str(e)
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-    
+
     def _check_database(self):
         try:
             # Simple database check
@@ -1022,7 +1038,7 @@ class SystemStatusView(APIView):
             return {'status': 'operational', 'latency': '0ms'}
         except:
             return {'status': 'error', 'message': 'Database connection failed'}
-    
+
     def _check_cache(self):
         try:
             # Check if cache is working
@@ -1032,7 +1048,7 @@ class SystemStatusView(APIView):
             return {'status': 'operational'}
         except:
             return {'status': 'error', 'message': 'Cache connection failed'}
-    
+
     def _check_storage(self):
         import shutil
         total, used, free = shutil.disk_usage("/")

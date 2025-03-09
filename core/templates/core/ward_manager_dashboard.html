@@ -42,7 +42,10 @@
             <h3 class="text-xl font-semibold mb-3">Register a New Resident</h3>
             <a href="{% url 'register_resident' %}" class="btn btn-secondary">Register Resident</a>
         </div>
-
+        <div class="mt-8">
+            <h3 class="text-xl font-semibold mb-3">Approve Resident Applications</h3>
+            <a href="{% url 'list_resident_applications' %}" class="btn btn-secondary">Approve Applications</a>
+        </div>
         <div class="mt-8">
             <h3 class="text-xl font-semibold mb-3">Manage Waste Collection Schedules</h3>
             <a href="{% url 'manage_schedules' %}" class="btn btn-secondary">Manage Schedules</a>

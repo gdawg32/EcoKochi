@@ -38,7 +38,7 @@ class Resident(models.Model):
     name = models.CharField(max_length=200, help_text="Full name of the resident")
     house_number = models.CharField(max_length=50, help_text="House number of the resident")
     phone_number = models.CharField(max_length=15, blank=True, null=True, help_text="Phone number of the resident")
-    qr_code_string = models.UUIDField(default=uuid.uuid4, editable=False, unique=True, help_text="Unique long string for QR code verification")
+    qr_code_string = models.UUIDField(default=uuid.uuid4, unique=True, help_text="Unique long string for QR code verification")
     assigned_at = models.DateTimeField(auto_now_add=True, help_text="Time when the resident was registered")
 
     def __str__(self):
