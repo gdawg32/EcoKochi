@@ -56,7 +56,6 @@ urlpatterns = [
     path("api/resident/qr-code/", views.ResidentQRCodeView.as_view(), name="resident-qr-code"),
 
     # System & Wards
-    path('api/system-status/', views.SystemStatusView.as_view(), name='system-status'),
     path('api/wards/', views.WardListView.as_view(), name='ward-list'),
 
     # Waste Schedule Management (for Ward Manager)
