@@ -1084,3 +1084,49 @@ def view_assignments(request):
         'assignments': assignments,
         'selected_date': selected_date
     })
+
+class CollectorAssignmentListView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        try:
+            collector = request.user.waste_collector
+        except AttributeError:
+            return Response({"error": "Only waste collectors can access this endpoint."}, status=403)
+
+        date_str = request.query_params.get("date")
+        queryset = CollectorAssignment.objects.filter(waste_collector=collector)
+
+        if date_str:
+            try:
+                date = timezone.datetime.strptime(date_str, "%Y-%m-%d").date()
+                queryset = queryset.filter(date=date)
+            except ValueError:
+                return Response({"error": "Invalid date format. Use YYYY-MM-DD."}, status=400)
+
+        assignments = queryset.select_related("resident").order_by("resident__house_number")
+        serializer = AssignedResidentSerializer(assignments, many=True)
+        return Response(serializer.data)
+
+class ResidentAssignmentListView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        try:
+            resident = request.user.resident
+        except AttributeError:
+            return Response({"error": "Only residents can access this endpoint."}, status=403)
+
+        date_str = request.query_params.get("date")
+        queryset = CollectorAssignment.objects.filter(resident=resident)
+
+        if date_str:
+            try:
+                date = timezone.datetime.strptime(date_str, "%Y-%m-%d").date()
+                queryset = queryset.filter(date=date)
+            except ValueError:
+                return Response({"error": "Invalid date format. Use YYYY-MM-DD."}, status=400)
+
+        assignments = queryset.select_related("waste_collector").order_by("date")
+        serializer = ResidentAssignmentSerializer(assignments, many=True)
+        return Response(serializer.data)

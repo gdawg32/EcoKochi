@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import WasteCollector, WasteSchedule, ResidentApplication, WasteCollectionActivity, Resident, Complaint, Payment, Notification, Feedback, SystemStatus
+from .models import WasteCollector, WasteSchedule, ResidentApplication, WasteCollectionActivity, Resident, Complaint, Payment, Notification, Feedback, CollectorAssignment
 from django.utils import timezone
 
 
@@ -130,3 +130,21 @@ class ResidentCollectionHistorySerializer(serializers.ModelSerializer):
             'date_time', 'biodegradable_waste', 'recyclable_waste',
             'non_recyclable_waste', 'hazardous_waste', 'notes'
         ]
+
+class AssignedResidentSerializer(serializers.ModelSerializer):
+    resident_id = serializers.IntegerField(source='resident.id')
+    name = serializers.CharField(source='resident.name')
+    house_number = serializers.CharField(source='resident.house_number')
+    phone = serializers.CharField(source='resident.phone_number')
+
+    class Meta:
+        model = CollectorAssignment
+        fields = ['resident_id', 'name', 'house_number', 'phone', 'date']
+
+class ResidentAssignmentSerializer(serializers.ModelSerializer):
+    collector_name = serializers.CharField(source='waste_collector.user.username', read_only=True)
+    collector_phone = serializers.CharField(source='waste_collector.phone_number', read_only=True)
+
+    class Meta:
+        model = CollectorAssignment
+        fields = ['id', 'date', 'collector_name', 'collector_phone']

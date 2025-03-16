@@ -39,6 +39,7 @@ urlpatterns = [
     path('api/collector/route/', views.WasteCollectorRouteView.as_view(), name='collector-route'),
     path('api/collector/daily-status/', views.WasteCollectorDailyStatusView.as_view(), name='collector-daily-status'),
     path('api/collector/emergency-report/', views.WasteCollectorEmergencyReportView.as_view(), name='collector-emergency'),
+    path('api/collector/assignments/', views.CollectorAssignmentListView.as_view(), name='collector-assignment-api'),
 
     # Collector Authentication
     path('api/garbage-collector/login/', views.GarbageCollectorLoginView.as_view(), name='garbage_collector_login'),
@@ -57,6 +58,7 @@ urlpatterns = [
     path('api/resident/history/', views.ResidentHistoryView.as_view(), name='resident-history'),
     path('api/resident/feedback/', views.ResidentFeedbackView.as_view(), name='resident-feedback'),
     path("api/resident/qr-code/", views.ResidentQRCodeView.as_view(), name="resident-qr-code"),
+    path('api/resident/assignments/', views.ResidentAssignmentListView.as_view(), name='resident-assignment-api'),
 
     # System & Wards
     path('api/wards/', views.WardListView.as_view(), name='ward-list'),
