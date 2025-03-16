@@ -1,0 +1,51 @@
+{% extends 'core/base.html' %}
+{% block title %}View Assignments{% endblock %}
+
+{% block content %}
+<div class="max-w-6xl mx-auto px-6 py-10">
+  <div class="bg-white rounded-xl shadow-md p-8">
+    <h1 class="text-2xl font-bold text-green-800 mb-6">🗂 Assigned Collections</h1>
+
+    <!-- Filter by date -->
+    <form method="get" class="mb-6 flex flex-wrap gap-4 items-center">
+      <input type="date" name="date" value="{{ selected_date }}"
+             class="border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500">
+      <button type="submit"
+              class="bg-green-700 text-white px-5 py-2 rounded hover:bg-green-800 transition">
+        Filter by Date
+      </button>
+      {% if selected_date %}
+      <a href="{% url 'view-assignments' %}"
+         class="text-sm text-green-700 underline ml-2">Clear Filter</a>
+      {% endif %}
+    </form>
+
+    {% if assignments %}
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm text-left border-collapse">
+        <thead>
+          <tr class="bg-green-100 text-green-900">
+            <th class="px-4 py-2 border">Date</th>
+            <th class="px-4 py-2 border">Collector</th>
+            <th class="px-4 py-2 border">Resident</th>
+            <th class="px-4 py-2 border">House #</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for assignment in assignments %}
+          <tr class="border-t hover:bg-green-50 transition">
+            <td class="px-4 py-2 border">{{ assignment.date }}</td>
+            <td class="px-4 py-2 border">{{ assignment.waste_collector.user.username }}</td>
+            <td class="px-4 py-2 border">{{ assignment.resident.name }}</td>
+            <td class="px-4 py-2 border">{{ assignment.resident.house_number }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+    <p class="text-gray-600">No assignments found{% if selected_date %} for {{ selected_date }}{% endif %}.</p>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

@@ -4,6 +4,8 @@ from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required, user_passes_test
 from .models import *
+from .forms import *
+import random
 from django.core.exceptions import PermissionDenied
 from django.contrib import messages
 from django.contrib.auth.models import Group
@@ -202,6 +204,7 @@ def register_resident(request):
         user = User.objects.create_user(username=username, password=password)
         resident = Resident.objects.create(
             user=user,
+            name=name,
             ward=ward,
             house_number=house_number,
             phone_number=phone_number,
@@ -947,3 +950,137 @@ class WasteCollectorEmergencyReportView(APIView):
             )
 
 
+@login_required
+def assign_residents_view(request):
+    ward = request.user.ward_manager.ward  # Adjust based on your model
+    if request.method == 'POST':
+        form = CollectorAssignmentForm(request.POST, ward=ward)
+        if form.is_valid():
+            collector = form.cleaned_data['collector']
+            date = form.cleaned_data['date']
+            selected_residents = form.cleaned_data['residents']
+
+            current_count = CollectorAssignment.objects.filter(
+                waste_collector=collector,
+                date=date
+            ).count()
+
+            available_slots = 20 - current_count
+            if available_slots <= 0:
+                messages.error(request, "This collector already has 20 assignments on this day.")
+                return redirect('assign-residents')
+
+            assigned = 0
+            for resident in selected_residents:
+                if CollectorAssignment.objects.filter(
+                    waste_collector=collector,
+                    resident=resident,
+                    date=date
+                ).exists():
+                    continue
+                if assigned < available_slots:
+                    CollectorAssignment.objects.create(
+                        waste_collector=collector,
+                        resident=resident,
+                        date=date
+                    )
+                    assigned += 1
+
+            messages.success(request, f"{assigned} residents assigned to {collector.user.username} for {date}.")
+            return redirect('assign-residents')
+    else:
+        form = CollectorAssignmentForm(ward=ward)
+
+    return render(request, 'core/assign_residents.html', {'form': form})
+
+@login_required
+def auto_assign_residents_view(request):
+    ward = request.user.ward_manager.ward  
+    
+    if request.method == 'POST':
+        form = AutoAssignmentForm(request.POST)
+        if form.is_valid():
+            start_date = form.cleaned_data['date']
+            collectors = list(WasteCollector.objects.filter(ward=ward))
+            all_residents = list(Resident.objects.filter(ward=ward))
+
+            if not collectors:
+                messages.error(request, "No collectors available in this ward.")
+                return redirect('auto-assign-residents')
+
+            # Remove already assigned residents (on any future date)
+            unassigned_residents = []
+            for r in all_residents:
+                if not CollectorAssignment.objects.filter(resident=r, date__gte=start_date).exists():
+                    unassigned_residents.append(r)
+
+            if not unassigned_residents:
+                messages.info(request, "All residents are already assigned.")
+                return redirect('auto-assign-residents')
+
+            random.shuffle(unassigned_residents)
+            assignments = []
+
+            i = 0
+            current_date = start_date
+            while i < len(unassigned_residents):
+                for collector in collectors:
+                    assigned_today = CollectorAssignment.objects.filter(
+                        waste_collector=collector,
+                        date=current_date
+                    ).count()
+
+                    slots_left = 20 - assigned_today
+                    if slots_left <= 0:
+                        continue
+
+                    for _ in range(slots_left):
+                        if i >= len(unassigned_residents):
+                            break
+
+                        resident = unassigned_residents[i]
+                        # Double-check to prevent accidental duplicate
+                        if not CollectorAssignment.objects.filter(
+                            resident=resident,
+                            date=current_date
+                        ).exists():
+                            assignments.append(CollectorAssignment(
+                                waste_collector=collector,
+                                resident=resident,
+                                date=current_date
+                            ))
+                            i += 1
+
+                # Move to next day if needed
+                if i < len(unassigned_residents):
+                    current_date += timedelta(days=1)
+
+            CollectorAssignment.objects.bulk_create(assignments)
+            length = len(assignments)
+            messages.success(request, f"Successfully assigned {length} residents starting from {start_date}.")
+            return redirect('auto-assign-residents')
+
+    else:
+        form = AutoAssignmentForm()
+
+    return render(request, 'core/auto_assign_residents.html', {'form': form})
+
+@login_required
+def view_assignments(request):
+    ward = request.user.ward_manager.ward
+    selected_date = request.GET.get('date')
+
+    if selected_date:
+        assignments = CollectorAssignment.objects.filter(
+            resident__ward=ward,
+            date=selected_date
+        ).select_related('waste_collector', 'resident').order_by('waste_collector__user__username')
+    else:
+        assignments = CollectorAssignment.objects.filter(
+            resident__ward=ward
+        ).select_related('waste_collector', 'resident').order_by('-date', 'waste_collector__user__username')
+
+    return render(request, 'core/view_assignments.html', {
+        'assignments': assignments,
+        'selected_date': selected_date
+    })

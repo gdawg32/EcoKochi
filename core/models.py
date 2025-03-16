@@ -265,3 +265,14 @@ class SystemStatus(models.Model):
     
     def __str__(self):
         return f"System Status: {self.current_status} (Updated: {self.last_updated})"
+
+class CollectorAssignment(models.Model):
+    waste_collector = models.ForeignKey(WasteCollector, on_delete=models.CASCADE)
+    resident = models.ForeignKey(Resident, on_delete=models.CASCADE)
+    date = models.DateField()
+
+    class Meta:
+        unique_together = ('waste_collector', 'resident', 'date')
+
+    def __str__(self):
+        return f"{self.resident.name} → {self.waste_collector.user.username} on {self.date}"

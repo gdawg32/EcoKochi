@@ -18,6 +18,9 @@ urlpatterns = [
     path('ward-manager-dashboard/residents/', views.list_resident_applications, name='list_resident_applications'),
     path('ward-manager-dashboard/residents/approve/<int:application_id>/', views.approve_resident_application, name='approve_resident'),
     path('ward-manager-dashboard/residents/reject/<int:application_id>/', views.reject_resident_application, name='reject_resident'),
+    path('ward-manager-dashboard/assign-residents/', views.assign_residents_view, name='assign-residents'),
+    path('ward-manager-dashboard/auto-assign/', views.auto_assign_residents_view, name='auto-assign-residents'),
+    path('ward-manager-dashboard/view-assignments/', views.view_assignments, name='view-assignments'),
 
     # Resident Management
     path('register-resident/', views.register_resident, name='register_resident'),
