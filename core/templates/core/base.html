@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="garden">
+<html lang="en" data-theme="cmyk">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,13 +9,15 @@
     <script>
         module.exports = {
             daisyui: {
-                themes: ["garden"],  // Choosing a nature/green theme for EcoKochi
+                themes: ["cmyk"],
             },
         }
     </script>
 </head>
-<body>
-    <div class="navbar bg-base-100">
+<body class="min-h-screen flex flex-col bg-base-100 text-base-content">
+
+    <!-- Navbar -->
+    <div class="navbar bg-base-100 shadow-md">
         <div class="navbar-start">
             <div class="dropdown">
                 <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
@@ -27,8 +29,8 @@
                     <li><a href="{% url 'index' %}">Home</a></li>
                     <li><a href="/about/">About</a></li>
                     <li><a href="/contact/">Contact</a></li>
-                    <li><a href={% url "admin_login" %}>Admin Login</a></li>
-                    <li><a href={% url "ward_manager_login" %}>Ward Manager Login</a></li>
+                    <li><a href="{% url 'admin_login' %}">Admin Login</a></li>
+                    <li><a href="{% url 'ward_manager_login' %}">Ward Manager Login</a></li>
                 </ul>
             </div>
         </div>
@@ -36,18 +38,20 @@
             <a href="{% url 'index' %}" class="btn btn-ghost text-3xl font-sans font-semibold tracking-wide">EcoKochi</a>
         </div>
         <div class="navbar-end">
-            <!-- Add additional navigation items here if needed -->
+            <!-- Add optional items like profile, notifications, etc. -->
         </div>
     </div>
 
-    <!-- Content Block for individual page content -->
-    {% block content %}
-    {% endblock %}
+    <!-- Page Content -->
+    <main class="flex-grow">
+        {% block content %}
+        {% endblock %}
+    </main>
 
-    <footer class="footer bottom-0 left-0 right-0 p-4 bg-neutral text-neutral-content flex items-center justify-center">
-        <div>
-            <p>Copyright 2025 - All rights reserved by EcoKochi</p>
-        </div>
+    <!-- Footer -->
+    <footer class="footer p-4 bg-neutral text-neutral-content flex items-center justify-center">
+        <p>Copyright 2025 - All rights reserved by EcoKochi</p>
     </footer>
+
 </body>
 </html>

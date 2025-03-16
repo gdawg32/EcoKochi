@@ -841,21 +841,37 @@ class WasteCollectionActivityViewSet(ModelViewSet):
     serializer_class = WasteCollectionActivitySerializer
 
     def get_queryset(self):
-        return WasteCollectionActivity.objects.filter(
-            waste_collector=self.request.user.waste_collector
-        )
+        collector = WasteCollector.objects.get(user=self.request.user)
+        queryset = WasteCollectionActivity.objects.filter(collector=collector)
+
+        # Optional: Filter by ?date=YYYY-MM-DD
+        date_str = self.request.query_params.get('date')
+        if date_str:
+            try:
+                filter_date = datetime.strptime(date_str, '%Y-%m-%d').date()
+                queryset = queryset.filter(date_time__date=filter_date)
+            except ValueError:
+                pass  # Invalid format, ignore filter
+
+        return queryset.order_by('-date_time')
 
     def perform_create(self, serializer):
-        serializer.save(waste_collector=self.request.user.waste_collector)
+        collector = WasteCollector.objects.get(user=self.request.user)
+        serializer.save(collector=collector)
 
     @action(detail=False, methods=['post'])
     def verify_qr(self, request):
         qr_code = request.data.get('qr_code')
+
+        if not qr_code:
+            return Response({"error": "QR code is required."}, status=status.HTTP_400_BAD_REQUEST)
+
         try:
             resident = Resident.objects.get(qr_code_string=qr_code)
-            # Check if waste was already collected today
+            collector = WasteCollector.objects.get(user=request.user)
+
             already_collected = WasteCollectionActivity.objects.filter(
-                waste_collector=request.user.waste_collector,
+                waste_collector=collector,
                 resident=resident,
                 date_time__date=timezone.now().date()
             ).exists()
@@ -870,12 +886,42 @@ class WasteCollectionActivityViewSet(ModelViewSet):
                 "resident_id": resident.id,
                 "name": resident.name,
                 "house_number": resident.house_number
-            })
+            }, status=status.HTTP_200_OK)
+
         except Resident.DoesNotExist:
             return Response(
                 {"error": "Invalid QR code"},
                 status=status.HTTP_404_NOT_FOUND
             )
+        except WasteCollector.DoesNotExist:
+            return Response(
+                {"error": "Collector not found"},
+                status=status.HTTP_403_FORBIDDEN
+            )
+class SimpleCollectorCollectionsView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        date_str = request.query_params.get('date')
+
+        try:
+            waste_collector = WasteCollector.objects.get(user=user)
+        except WasteCollector.DoesNotExist:
+            return Response({"error": "Collector not found."}, status=404)
+
+        queryset = WasteCollectionActivity.objects.filter(waste_collector=waste_collector)
+
+        if date_str:
+            try:
+                filter_date = datetime.strptime(date_str, '%Y-%m-%d').date()
+                queryset = queryset.filter(date_time__date=filter_date)
+            except ValueError:
+                return Response({"error": "Invalid date format. Use YYYY-MM-DD."}, status=400)
+
+        serializer = WasteCollectionActivitySerializer(queryset, many=True)
+        return Response(serializer.data)
+
 
 class WasteCollectorEmergencyReportView(APIView):
     permission_classes = [IsAuthenticated]

@@ -23,11 +23,13 @@ class GarbageCollectorSerializer(serializers.ModelSerializer):
 class WasteCollectionActivitySerializer(serializers.ModelSerializer):
     resident_name = serializers.CharField(source='resident.name', read_only=True)
     resident_house_number = serializers.CharField(source='resident.house_number', read_only=True)
+    collector_username = serializers.CharField(source='collector.user.username', read_only=True)  # Optional
 
     class Meta:
         model = WasteCollectionActivity
         fields = [
             'id', 'resident', 'resident_name', 'resident_house_number',
+            'collector_username',
             'date_time', 'biodegradable_waste', 'recyclable_waste',
             'non_recyclable_waste', 'hazardous_waste', 'notes'
         ]
@@ -36,6 +38,7 @@ class WasteCollectionActivitySerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         representation = super().to_representation(instance)
         return representation
+
 
 class WasteScheduleSerializer(serializers.ModelSerializer):
     class Meta:
@@ -115,10 +118,6 @@ class QRValidationResponseSerializer(serializers.Serializer):
     message = serializers.CharField()
     timestamp = serializers.DateTimeField()
 
-class SystemStatusSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = SystemStatus
-        fields = ['current_status', 'message', 'last_updated', 'scheduled_maintenance']
 
 class ResidentCollectionHistorySerializer(serializers.ModelSerializer):
     resident_name = serializers.CharField(source='resident.name', read_only=True)

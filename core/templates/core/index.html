@@ -1,103 +1,396 @@
 {% extends 'core/base.html' %}
 
 {% block content %}
-<!-- Hero Section -->
-<section class="bg-green-600 text-white flex items-center justify-center py-24 bg-cover bg-center" style="background-image: url('https://preview.redd.it/drove-from-chennai-to-kochi-and-ended-up-falling-for-this-v0-fc415meenu1e1.jpg?width=1080&crop=smart&auto=webp&s=eb3f6831cb3cadb403f11ba0563aaa1d596ff36d');">
-    <div class="text-center">
-        <h1 class="text-4xl md:text-6xl font-bold mb-4">EcoKochi: Smart City Waste Management</h1>
-        <p class="text-xl md:text-2xl mb-6">Revolutionizing waste management for a cleaner, greener future.</p>
-        <a href="#about" class="btn btn-primary text-xl px-6 py-3 rounded-full">Learn More</a>
+<!-- Hero Section with Gradient Overlay -->
+<section class="relative h-[75vh] flex items-center justify-center overflow-hidden">
+    <div class="absolute inset-0 z-0 flex justify-center items-center bg-slate-800">
+        <div class="relative w-full h-full overflow-hidden">
+            <div class="absolute inset-0 bg-black/50"></div>
+            <img src="https://images.pexels.com/photos/16773106/pexels-photo-16773106/free-photo-of-fisherman-in-a-port.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Kochi Fisherman Port" class="w-full h-full object-cover">
+        </div>
+    </div>
+    
+    <!-- Hero Content -->
+    <div class="relative z-20 text-center px-4 max-w-3xl mx-auto">
+        <h1 class="text-4xl md:text-6xl font-bold mb-4 text-white drop-shadow-lg">EcoKochi</h1>
+        <p class="text-xl md:text-2xl mb-6 text-white font-light">Smart City Waste Management for a Cleaner Tomorrow</p>
+        <div class="flex flex-col sm:flex-row gap-3 justify-center">
+            <a href="#about" class="btn btn-primary gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                Learn More
+            </a>
+            <a href="/register" class="btn btn-accent gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+                Join Now
+            </a>
+        </div>
+    </div>
+    
+    <!-- Scroll Down Indicator -->
+    <div class="absolute bottom-6 left-0 right-0 flex justify-center animate-bounce z-20">
+        <a href="#dashboard" class="text-white">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+            </svg>
+        </a>
     </div>
 </section>
 
-
-<!-- Real-Time Monitoring and Analytics Section -->
-<section class="py-16 bg-gray-100 text-center">
-    <div class="max-w-5xl mx-auto">
-        <h2 class="text-3xl font-semibold mb-8">Real-Time Monitoring and Analytics</h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-            <div class="stats shadow-lg">
-                <div class="stat">
-                    <div class="stat-title">Transparency</div>
-                    <div class="stat-value">100%</div>
-                    <div class="stat-desc">Operations Visibility</div>
-                </div>
+<!-- Dashboard Section -->
+<section id="dashboard" class="py-20 bg-gray-50">
+    <div class="container mx-auto px-4">
+        <div class="text-center mb-16">
+            <h2 class="text-3xl font-light text-gray-900 tracking-tight mb-4">Real-Time Monitoring & Analytics</h2>
+            <p class="text-base text-gray-500 max-w-2xl mx-auto">Our smart technology provides up-to-the-minute waste management insights across Kochi.</p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+            <div class="bg-white overflow-hidden shadow-sm rounded-lg py-6 px-6">
+                <p class="text-sm font-medium text-gray-500">Transparency</p>
+                <p class="mt-1 text-3xl font-semibold text-gray-900">100%</p>
+                <p class="text-sm text-gray-400">Complete Operational Visibility</p>
             </div>
-            <div class="stats shadow-lg">
-                <div class="stat">
-                    <div class="stat-title">Availability</div>
-                    <div class="stat-value">24/7</div>
-                    <div class="stat-desc">Access EcoKochi Data</div>
-                </div>
+            <div class="bg-white overflow-hidden shadow-sm rounded-lg py-6 px-6">
+                <p class="text-sm font-medium text-gray-500">Availability</p>
+                <p class="mt-1 text-3xl font-semibold text-green-600">24/7</p>
+                <p class="text-sm text-gray-400">Continuous Data Access</p>
             </div>
-            <div class="stats shadow-lg">
-                <div class="stat">
-                    <div class="stat-title">Accuracy</div>
-                    <div class="stat-value">99.99%</div>
-                    <div class="stat-desc">Data Accuracy</div>
-                </div>
+            <div class="bg-white overflow-hidden shadow-sm rounded-lg py-6 px-6">
+                <p class="text-sm font-medium text-gray-500">Accuracy</p>
+                <p class="mt-1 text-3xl font-semibold text-gray-900">99.99%</p>
+                <p class="text-sm text-gray-400">Precision Data Analysis</p>
             </div>
         </div>
     </div>
 </section>
 
-<!-- Eco-Friendly Initiatives Section -->
-<section class="py-16 bg-white text-center">
-    <div class="max-w-5xl mx-auto">
-        <h2 class="text-3xl font-semibold mb-8">Eco-Friendly Initiatives and Sustainability Efforts</h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 items-center justify-center">
-            <div class="card bg-white shadow-lg p-6 h-full">
-                <div class="flex items-center">
-                    <img class="w-12 h-12 mr-4" src="https://static.vecteezy.com/system/resources/previews/000/626/625/non_2x/green-leaf-logo-vector.jpg" alt="recycle logo">
-                    <h3 class="text-2xl font-semibold mb-4">Waste Reduction</h3>
+<!-- Initiatives Section -->
+<section id="initiatives" class="py-20 bg-white">
+    <div class="container mx-auto px-4">
+        <div class="text-center mb-16">
+            <h2 class="text-3xl font-light text-gray-900 tracking-tight mb-4">Eco-Friendly Initiatives</h2>
+            <p class="text-base text-gray-500 max-w-2xl mx-auto">Creating a sustainable Kochi through innovative environmental solutions.</p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+            <div class="bg-white rounded-lg transition-all duration-200 hover:shadow-md flex flex-col border border-gray-100 overflow-hidden group">
+                <div class="flex-grow px-5 py-6">
+                    <div class="h-10 w-10 rounded-lg bg-green-100 flex items-center justify-center mb-4 group-hover:bg-green-200 transition-colors duration-200">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                        </svg>
+                    </div>
+                    <h2 class="text-lg font-medium text-gray-900 mb-1">Waste Reduction</h2>
+                    <p class="text-sm text-gray-500 mb-4">Innovative strategies to minimize waste generation at the source.</p>
                 </div>
-                <p class="h-full">Promote sustainable practices and reduce waste generation.</p>
+                <a href="#" class="py-3 px-5 bg-gray-50 text-sm font-medium text-gray-700 hover:text-green-600 group-hover:bg-gray-100 transition-colors duration-200 flex justify-between items-center" onclick="document.getElementById('waste-reduction-modal').showModal(); return false;">
+                    <span>Learn More</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                    </svg>
+                </a>
             </div>
-            <div class="card bg-white shadow-lg p-6 h-full">
-                <div class="flex items-center">
-                    <img class="w-12 h-12 mr-4" src="https://i.pinimg.com/736x/66/db/cb/66dbcbb7f70864efa5e4e8097e865a28.jpg" alt="compost logo">
-                    <h3 class="text-2xl font-semibold mb-4">Recycling & Composting</h3>
+            
+            <div class="bg-white rounded-lg transition-all duration-200 hover:shadow-md flex flex-col border border-gray-100 overflow-hidden group">
+                <div class="flex-grow px-5 py-6">
+                    <div class="h-10 w-10 rounded-lg bg-blue-100 flex items-center justify-center mb-4 group-hover:bg-blue-200 transition-colors duration-200">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                        </svg>
+                    </div>
+                    <h2 class="text-lg font-medium text-gray-900 mb-1">Recycling & Composting</h2>
+                    <p class="text-sm text-gray-500 mb-4">Comprehensive recycling programs and community composting initiatives.</p>
                 </div>
-                <p class="h-full">Encourage and support community recycling and composting efforts.</p>
+                <a href="#" class="py-3 px-5 bg-gray-50 text-sm font-medium text-gray-700 hover:text-blue-600 group-hover:bg-gray-100 transition-colors duration-200 flex justify-between items-center" onclick="document.getElementById('recycling-modal').showModal(); return false;">
+                    <span>Learn More</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                    </svg>
+                </a>
             </div>
-            <div class="card bg-white shadow-lg p-6 h-full">
-                <div class="flex items-center">
-                    <img class="w-12 h-12 mr-4" src="https://static.vecteezy.com/system/resources/previews/004/565/798/non_2x/cool-and-modern-logo-for-environmental-conservation-organizations-free-vector.jpg" alt="earth flag logo">
-                    <h3 class="text-2xl font-semibold mb-4">Environmental Awareness</h3>
+            
+            <div class="bg-white rounded-lg transition-all duration-200 hover:shadow-md flex flex-col border border-gray-100 overflow-hidden group">
+                <div class="flex-grow px-5 py-6">
+                    <div class="h-10 w-10 rounded-lg bg-amber-100 flex items-center justify-center mb-4 group-hover:bg-amber-200 transition-colors duration-200">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <h2 class="text-lg font-medium text-gray-900 mb-1">Environmental Education</h2>
+                    <p class="text-sm text-gray-500 mb-4">Building awareness and empowering citizens with knowledge.</p>
                 </div>
-                <p class="h-full">Spread awareness and education about the importance of environmental conservation.</p>
+                <a href="#" class="py-3 px-5 bg-gray-50 text-sm font-medium text-gray-700 hover:text-amber-600 group-hover:bg-gray-100 transition-colors duration-200 flex justify-between items-center" onclick="document.getElementById('education-modal').showModal(); return false;">
+                    <span>Learn More</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                    </svg>
+                </a>
             </div>
         </div>
     </div>
 </section>
 
-<!-- Responsive and User-Friendly Mobile App Section -->
-<section class="py-16 bg-yellow-200 text-center">
-    <div class="max-w-5xl mx-auto">
-        <h2 class="text-3xl font-semibold mb-8 text-green-600">EcoKochi's Fun and User-Friendly Mobile App!</h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-            <div class="card bg-white rounded-lg shadow-lg p-6">
-                <h3 class="text-2xl font-semibold mb-4 text-purple-600">Waste Reporting</h3>
-                <p class="text-lg text-gray-700">Snap a photo and report waste issues in your community. We'll take care of the rest!</p>
+<!-- Mobile App Section -->
+<section id="app" class="py-20 bg-gray-50">
+    <div class="container mx-auto px-4">
+        <div class="text-center mb-16">
+            <h2 class="text-3xl font-light text-gray-900 tracking-tight mb-4">EcoKochi Mobile App</h2>
+            <p class="text-base text-gray-500 max-w-2xl mx-auto">Join thousands of citizens making Kochi cleaner with our easy-to-use app.</p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+            <div class="bg-white rounded-lg transition-all duration-200 hover:shadow-md flex flex-col border border-gray-100 overflow-hidden group">
+                <div class="flex-grow px-5 py-6">
+                    <div class="h-10 w-10 rounded-lg bg-green-100 flex items-center justify-center mb-4 group-hover:bg-green-200 transition-colors duration-200">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                    </div>
+                    <h2 class="text-lg font-medium text-gray-900 mb-1">Waste Reporting</h2>
+                    <p class="text-sm text-gray-500 mb-4">Snap a photo and report waste issues in your community.</p>
+                </div>
+                <a href="#" class="py-3 px-5 bg-gray-50 text-sm font-medium text-gray-700 hover:text-green-600 group-hover:bg-gray-100 transition-colors duration-200 flex justify-between items-center" onclick="document.getElementById('waste-reporting-modal').showModal(); return false;">
+                    <span>Learn More</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                    </svg>
+                </a>
             </div>
-            <div class="card bg-white rounded-lg shadow-lg p-6">
-                <h3 class="text-2xl font-semibold mb-4 text-blue-600">Real-Time Tracking</h3>
-                <p class="text-lg text-gray-700">Stay on top of collection schedules and waste levels. We'll keep you informed!</p>
+            
+            <div class="bg-white rounded-lg transition-all duration-200 hover:shadow-md flex flex-col border border-gray-100 overflow-hidden group">
+                <div class="flex-grow px-5 py-6">
+                    <div class="h-10 w-10 rounded-lg bg-blue-100 flex items-center justify-center mb-4 group-hover:bg-blue-200 transition-colors duration-200">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+                        </svg>
+                    </div>
+                    <h2 class="text-lg font-medium text-gray-900 mb-1">Real-Time Tracking</h2>
+                    <p class="text-sm text-gray-500 mb-4">Monitor collection schedules and waste levels in real-time.</p>
+                </div>
+                <a href="#" class="py-3 px-5 bg-gray-50 text-sm font-medium text-gray-700 hover:text-blue-600 group-hover:bg-gray-100 transition-colors duration-200 flex justify-between items-center" onclick="document.getElementById('tracking-modal').showModal(); return false;">
+                    <span>Learn More</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                    </svg>
+                </a>
             </div>
-            <div class="card bg-white rounded-lg shadow-lg p-6">
-                <h3 class="text-2xl font-semibold mb-4 text-pink-600">Community Engagement</h3>
-                <p class="text-lg text-gray-700">Join the EcoKochi community and participate in eco-friendly initiatives. Let's make a difference together!</p>
+            
+            <div class="bg-white rounded-lg transition-all duration-200 hover:shadow-md flex flex-col border border-gray-100 overflow-hidden group">
+                <div class="flex-grow px-5 py-6">
+                  <div class="h-10 w-10 rounded-lg bg-amber-100 flex items-center justify-center mb-4 group-hover:bg-amber-200 transition-colors duration-200">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3" />
+                    </svg>
+                </div>
+                <h2 class="text-lg font-medium text-gray-900 mb-1">Community Rewards</h2>
+                <p class="text-sm text-gray-500 mb-4">Earn points and recognition for eco-friendly actions.</p>
             </div>
+            <a href="#" class="py-3 px-5 bg-gray-50 text-sm font-medium text-gray-700 hover:text-amber-600 group-hover:bg-gray-100 transition-colors duration-200 flex justify-between items-center" onclick="document.getElementById('rewards-modal').showModal(); return false;">
+                <span>Learn More</span>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+            </a>
         </div>
     </div>
+</div>
 </section>
 
+<!-- Modals -->
+<!-- Eco-Friendly Initiatives Modals -->
+<dialog id="waste-reduction-modal" class="modal modal-bottom sm:modal-middle">
+  <div class="modal-box">
+    <form method="dialog">
+      <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+    </form>
+    <h3 class="font-bold text-lg text-green-600">Waste Reduction Initiative</h3>
+    <div class="py-4">
+      <p class="mb-3">EcoKochi is leading the way in implementing innovative waste reduction strategies across the city:</p>
+      <ul class="list-disc pl-5 mb-3 space-y-2">
+        <li>Source Reduction Programs targeting households and businesses</li>
+        <li>Smart Procurement Guidelines for government and corporate sectors</li>
+        <li>Reusable Container Incentives for local food vendors and markets</li>
+        <li>Single-Use Plastic Alternatives available at subsidized rates</li>
+        <li>Product Lifetime Extension through repair workshops and skills training</li>
+      </ul>
+      <p>Our approach has already reduced municipal waste by 23% in pilot neighborhoods, with plans to expand citywide by 2026.</p>
+    </div>
+    <div class="modal-action">
+      <form method="dialog">
+        <button class="btn btn-primary">Close</button>
+      </form>
+    </div>
+  </div>
+</dialog>
 
-<!-- Join the Movement Section -->
-<section class="py-16 bg-green-600 text-white text-center">
-    <h2 class="text-3xl font-semibold mb-4">Join the EcoKochi Movement Today</h2>
-    <p class="text-xl mb-8">Be a part of Kochi’s sustainable future by actively participating in waste management.</p>
-    <a href="/register" class="btn btn-success text-xl px-6 py-3 rounded-full">Join the Community</a>
-</section>
+<dialog id="recycling-modal" class="modal modal-bottom sm:modal-middle">
+  <div class="modal-box">
+    <form method="dialog">
+      <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+    </form>
+    <h3 class="font-bold text-lg text-blue-600">Recycling & Composting Programs</h3>
+    <div class="py-4">
+      <p class="mb-3">Our comprehensive recycling and composting initiatives are transforming Kochi's waste management landscape:</p>
+      <ul class="list-disc pl-5 mb-3 space-y-2">
+        <li>Neighborhood Recycling Centers with 24/7 access</li>
+        <li>Community Composting Hubs for organic waste processing</li>
+        <li>Material Recovery Facilities with advanced sorting technology</li>
+        <li>Door-to-Door Collection for separated recyclables</li>
+        <li>School Composting Programs teaching sustainable practices</li>
+      </ul>
+      <p>These efforts have diverted over 65% of waste from landfills in participating communities, creating valuable resources from what was once considered trash.</p>
+    </div>
+    <div class="modal-action">
+      <form method="dialog">
+        <button class="btn btn-primary">Close</button>
+      </form>
+    </div>
+  </div>
+</dialog>
 
+<dialog id="education-modal" class="modal modal-bottom sm:modal-middle">
+  <div class="modal-box">
+    <form method="dialog">
+      <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+    </form>
+    <h3 class="font-bold text-lg text-amber-600">Environmental Education</h3>
+    <div class="py-4">
+      <p class="mb-3">EcoKochi believes education is the foundation for lasting environmental change:</p>
+      <ul class="list-disc pl-5 mb-3 space-y-2">
+        <li>School Curriculum Enhancement with waste management modules</li>
+        <li>Public Workshops on sustainable living practices</li>
+        <li>Business Training Programs for corporate sustainability</li>
+        <li>Digital Learning Platforms accessible to all citizens</li>
+        <li>Community Ambassadors Program training local environmental leaders</li>
+      </ul>
+      <p>Our education initiatives have reached over 65,000 students and 25,000 adults across Kochi, building a community of environmentally conscious citizens.</p>
+    </div>
+    <div class="modal-action">
+      <form method="dialog">
+        <button class="btn btn-primary">Close</button>
+      </form>
+    </div>
+  </div>
+</dialog>
+
+<!-- Mobile App Modals -->
+<dialog id="waste-reporting-modal" class="modal modal-bottom sm:modal-middle">
+  <div class="modal-box">
+    <form method="dialog">
+      <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+    </form>
+    <h3 class="font-bold text-lg text-green-600">Waste Reporting</h3>
+    <div class="py-4">
+      <p class="mb-3">Our mobile app makes it easy to report waste issues in your community:</p>
+      <ul class="list-disc pl-5 mb-3 space-y-2">
+        <li>Snap a photo of illegal dumping, overflowing bins, or other waste issues</li>
+        <li>GPS-tagging for accurate location reporting</li>
+        <li>AI-powered waste classification to help prioritize response</li>
+        <li>Real-time status updates as your report is processed</li>
+        <li>Direct communication with waste management authorities</li>
+      </ul>
+      <p>Since launching this feature, response times to waste issues have decreased by 76%, with over 5,000 successful cleanups initiated through citizen reporting.</p>
+    </div>
+    <div class="modal-action">
+      <form method="dialog">
+        <button class="btn btn-primary">Close</button>
+      </form>
+    </div>
+  </div>
+</dialog>
+
+<dialog id="tracking-modal" class="modal modal-bottom sm:modal-middle">
+  <div class="modal-box">
+    <form method="dialog">
+      <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+    </form>
+    <h3 class="font-bold text-lg text-blue-600">Real-Time Tracking</h3>
+    <div class="py-4">
+      <p class="mb-3">Stay informed with our advanced real-time tracking features:</p>
+      <ul class="list-disc pl-5 mb-3 space-y-2">
+        <li>Live Collection Schedule updates with ETA for your neighborhood</li>
+        <li>Smart Bin Monitoring showing capacity levels across the city</li>
+        <li>Route Optimization to reduce collection inefficiencies</li>
+        <li>Personalized Waste Calendar with reminder notifications</li>
+        <li>Historical Data Analysis to track your neighborhood's performance</li>
+      </ul>
+      <p>This transparency has improved collection efficiency by 42% and reduced fuel consumption by 28% across our waste management fleet.</p>
+    </div>
+    <div class="modal-action">
+      <form method="dialog">
+        <button class="btn btn-primary">Close</button>
+      </form>
+    </div>
+  </div>
+</dialog>
+
+<dialog id="rewards-modal" class="modal modal-bottom sm:modal-middle">
+  <div class="modal-box">
+    <form method="dialog">
+      <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+    </form>
+    <h3 class="font-bold text-lg text-amber-600">Community Rewards</h3>
+    <div class="py-4">
+      <p class="mb-3">Get rewarded for your environmental contributions:</p>
+      <ul class="list-disc pl-5 mb-3 space-y-2">
+        <li>EcoPoints for proper waste segregation and recycling</li>
+        <li>Achievement Badges for consistent eco-friendly actions</li>
+        <li>Neighborhood Leaderboards to encourage friendly competition</li>
+        <li>Redeem points for discounts at eco-friendly local businesses</li>
+        <li>Special recognition for community environmental champions</li>
+      </ul>
+      <p>Our rewards program has engaged over 35,000 citizens, with participants recycling 3x more than non-participants on average.</p>
+    </div>
+    <div class="modal-action">
+      <form method="dialog">
+        <button class="btn btn-primary">Close</button>
+      </form>
+    </div>
+  </div>
+</dialog>
+
+<!-- About Modal -->
+<dialog id="about-modal" class="modal modal-bottom sm:modal-middle">
+  <div class="modal-box">
+    <form method="dialog">
+      <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+    </form>
+    <h3 class="font-bold text-lg">About EcoKochi</h3>
+    <div class="py-4">
+      <p class="mb-3">EcoKochi is a pioneering smart city initiative focused on revolutionizing waste management in Kochi through technology, community engagement, and sustainable practices.</p>
+      <p class="mb-3">Our mission is to create a cleaner, greener Kochi by empowering citizens, leveraging IoT technology, and implementing innovative waste management solutions.</p>
+      <h4 class="font-semibold mb-2 mt-4">Key Objectives:</h4>
+      <ul class="list-disc pl-5 mb-3 space-y-2">
+        <li>Reduce waste generation by 30% by 2028</li>
+        <li>Achieve 80% waste diversion from landfills</li>
+        <li>Create a transparent waste management ecosystem</li>
+        <li>Engage 75% of citizens in active participation</li>
+        <li>Establish Kochi as a model for sustainable urban living</li>
+      </ul>
+    </div>
+    <div class="modal-action">
+      <form method="dialog">
+        <button class="btn btn-primary">Close</button>
+      </form>
+    </div>
+  </div>
+</dialog>
+
+<!-- JavaScript for Learn More button in Hero Section -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const heroLearnMoreBtn = document.querySelector('#about');
+    if (heroLearnMoreBtn) {
+      heroLearnMoreBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        document.getElementById('about-modal').showModal();
+      });
+    }
+  });
+</script>
 {% endblock %}

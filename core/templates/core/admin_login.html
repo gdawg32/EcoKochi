@@ -1,33 +1,47 @@
-{% extends "core/base.html" %}
+{% extends 'core/base.html' %}
 
 {% block content %}
-<div class="flex items-center justify-center min-h-screen bg-base-200">
-    <div class="w-full max-w-md bg-white shadow-md rounded-lg p-6">
-        <h2 class="text-2xl font-bold text-center mb-6">Admin Login</h2>
-        <form method="POST">
+<div class="min-h-screen flex items-center justify-center bg-base-100 py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md w-full space-y-8 bg-white p-8 shadow-lg rounded-lg">
+        <!-- Logo/Title -->
+        <div class="text-center">
+            <h2 class="mt-2 text-3xl font-bold text-green-600">Admin Login</h2>
+            <p class="mt-1 text-sm text-gray-500">
+                Sign in to manage EcoKochi
+            </p>
+        </div>
+
+        <!-- Form -->
+        <form method="POST" class="mt-8 space-y-6">
             {% csrf_token %}
-            <div class="mb-4">
-                <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
-                <input type="text" id="username" name="username" 
-                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:outline-none"
-                    required>
+            <div class="rounded-md shadow-sm -space-y-px">
+                <div class="mb-4">
+                    <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
+                    <input id="username" name="username" type="text" autocomplete="username" required
+                        class="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-400 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm" placeholder="Enter your username">
+                </div>
+                <div>
+                    <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+                    <input id="password" name="password" type="password" autocomplete="current-password" required
+                        class="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-400 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm" placeholder="Enter your password">
+                </div>
             </div>
-            <div class="mb-4">
-                <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
-                <input type="password" id="password" name="password" 
-                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:outline-none"
-                    required>
-            </div>
-            <div class="text-center">
-                <button type="submit" 
-                    class="w-full bg-indigo-600 text-white py-2 rounded-md hover:bg-indigo-700">
-                    Login
+
+            <!-- Login Button -->
+            <div>
+                <button type="submit"
+                    class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
+                    Sign In
                 </button>
             </div>
         </form>
-        <p class="text-sm text-center text-gray-600 mt-4">
-            Unauthorized access is prohibited.
-        </p>
+
+        <!-- Error Message -->
+        {% if error_message %}
+            <div class="text-red-500 text-sm text-center">
+                {{ error_message }}
+            </div>
+        {% endif %}
     </div>
 </div>
 {% endblock %}

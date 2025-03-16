@@ -1,64 +1,154 @@
 {% extends "core/base.html" %}
 {% block content %}
-<div class="container mx-auto p-6">
-    <h1 class="text-2xl font-bold mb-4">Ward Management</h1>
-    
-    {% if error %}
-    <div class="alert alert-error">
-        <span>{{ error }}</span>
-    </div>
-    {% endif %}
-    
-    <h2 class="text-lg font-semibold mb-3">Create a New WardManager</h2>
-    <form method="POST" class="mb-6">
-        {% csrf_token %}
-        <div class="form-control mb-3">
-            <label class="label" for="username">
-                <span class="label-text">Username</span>
-            </label>
-            <input type="text" name="username" id="username" class="input input-bordered" required>
-        </div>
-        <div class="form-control mb-3">
-            <label class="label" for="email">
-                <span class="label-text">Email</span>
-            </label>
-            <input type="email" name="email" id="email" class="input input-bordered" required>
-        </div>
-        <div class="form-control mb-3">
-            <label class="label" for="password">
-                <span class="label-text">Password</span>
-            </label>
-            <input type="password" name="password" id="password" class="input input-bordered" required>
-        </div>
-        <div class="form-control mb-3">
-            <label class="label" for="ward">
-                <span class="label-text">Ward</span>
-            </label>
-            <select name="ward" id="ward" class="select select-bordered" required>
-                {% for ward in wards %}
-                <option value="{{ ward.id }}">{{ ward.ward_no }} - {{ ward.name }}</option>
-                {% endfor %}
-            </select>
-        </div>
-        <button type="submit" class="btn btn-primary">Create WardManager</button>
-    </form>
 
-    <h2 class="text-lg font-semibold mb-3">Existing Wards</h2>
-    <table class="table w-full border">
-        <thead>
-            <tr>
-                <th>Ward Number</th>
-                <th>Ward Name</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for ward in wards %}
-            <tr>
-                <td>{{ ward.ward_no }}</td>
-                <td>{{ ward.name }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+<div class="container mx-auto p-8">
+    <div class="bg-white shadow-sm border border-gray-200 rounded-2xl p-8">
+        <div class="flex items-center justify-between mb-6">
+            <h1 class="text-2xl font-semibold text-gray-800">Ward Management</h1>
+        </div>
+
+        {% if error %}
+        <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded-lg mb-6">
+            <p>{{ error }}</p>
+        </div>
+        {% endif %}
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+            <!-- Create Ward Manager Form -->
+            <div class="bg-gray-50 p-6 rounded-xl border border-gray-200 shadow-sm">
+                <h2 class="text-lg font-medium text-gray-700 mb-4 flex items-center gap-2">
+                    <svg class="h-5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+                    </svg>
+                    Create New Ward Manager
+                </h2>
+                <form method="POST" id="ward-manager-form" class="space-y-4">
+                    {% csrf_token %}
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Username</label>
+                        <input type="text" name="username" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-primary" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Email</label>
+                        <input type="email" name="email" id="email" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-primary" required>
+                        <p id="email-validation" class="text-red-500 text-xs mt-1 hidden">Invalid email format</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Password</label>
+                        <input type="password" name="password" id="password" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-primary" required>
+                        <div class="h-1 bg-gray-200 rounded-full mt-1">
+                            <div class="h-1 bg-red-500 transition-all duration-300" id="password-strength"></div>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1" id="password-feedback">Password strength</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Ward</label>
+                        <select name="ward" id="ward" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-primary" required>
+                            <option value="" disabled selected>Select a ward</option>
+                            {% for ward in wards %}
+                            <option value="{{ ward.id }}">{{ ward.ward_no }} - {{ ward.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mt-4">
+                        <button type="submit" class="w-full bg-primary text-white py-2 rounded-lg hover:bg-primary/90">
+                            Create Ward Manager
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Existing Wards Table -->
+            <div class="bg-gray-50 p-6 rounded-xl border border-gray-200 shadow-sm">
+                <h2 class="text-lg font-medium text-gray-700 mb-4 flex items-center gap-2">
+                    <svg class="h-5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                    </svg>
+                    Existing Wards
+                </h2>
+                <input type="text" id="ward-search" placeholder="Search wards..."
+                    class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-primary mb-4">
+
+                <table class="w-full border-collapse border">
+                    <thead>
+                        <tr class="bg-gray-100">
+                            <th class="p-2 text-left">Ward Number</th>
+                            <th class="p-2 text-left">Ward Name</th>
+                        </tr>
+                    </thead>
+                    <tbody id="wards-table-body">
+                        {% for ward in wards %}
+                        <tr class="border-t hover:bg-gray-200 transition-colors duration-200">
+                            <td class="p-2">{{ ward.ward_no }}</td>
+                            <td class="p-2">{{ ward.name }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <p id="no-results" class="text-center text-gray-500 mt-4 hidden">No wards found</p>
+            </div>
+        </div>
+    </div>
 </div>
+
+<script>
+    // Email Validation
+    document.getElementById('email').addEventListener('blur', function () {
+        const emailValidation = document.getElementById('email-validation');
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(this.value)) {
+            emailValidation.classList.remove('hidden');
+        } else {
+            emailValidation.classList.add('hidden');
+        }
+    });
+
+    // Password Strength Indicator
+    document.getElementById('password').addEventListener('input', function () {
+        const strengthMeter = document.getElementById('password-strength');
+        const feedback = document.getElementById('password-feedback');
+        const strength = this.value.length;
+
+        if (strength <= 4) {
+            strengthMeter.style.width = "25%";
+            strengthMeter.style.backgroundColor = "#ef4444"; // red
+            feedback.textContent = "Weak";
+        } else if (strength <= 7) {
+            strengthMeter.style.width = "50%";
+            strengthMeter.style.backgroundColor = "#f97316"; // orange
+            feedback.textContent = "Fair";
+        } else if (strength <= 10) {
+            strengthMeter.style.width = "75%";
+            strengthMeter.style.backgroundColor = "#eab308"; // yellow
+            feedback.textContent = "Good";
+        } else {
+            strengthMeter.style.width = "100%";
+            strengthMeter.style.backgroundColor = "#22c55e"; // green
+            feedback.textContent = "Strong";
+        }
+    });
+
+    // Ward Search
+    document.getElementById('ward-search').addEventListener('input', function () {
+        const searchTerm = this.value.toLowerCase();
+        let matchCount = 0;
+
+        document.querySelectorAll('#wards-table-body tr').forEach(row => {
+            const wardNumber = row.children[0].textContent.toLowerCase();
+            const wardName = row.children[1].textContent.toLowerCase();
+
+            if (wardNumber.includes(searchTerm) || wardName.includes(searchTerm)) {
+                row.classList.remove('hidden');
+                matchCount++;
+            } else {
+                row.classList.add('hidden');
+            }
+        });
+
+        document.getElementById('no-results').classList.toggle('hidden', matchCount > 0);
+    });
+</script>
+
 {% endblock %}

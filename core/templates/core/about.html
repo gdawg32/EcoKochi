@@ -1,0 +1,109 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+<section class="py-16 bg-gradient-to-b from-green-50 to-white">
+  <div class="container mx-auto px-4 max-w-4xl">
+    <!-- Header -->
+    <div class="text-center mb-12">
+      <h1 class="text-4xl font-serif font-bold text-green-800 mb-4">About Eco Kochi</h1>
+      <div class="divider w-24 h-1 bg-green-600 mx-auto"></div>
+    </div>
+    
+    <!-- Lead Quote -->
+    <div class="card bg-green-100 shadow-sm mb-10">
+      <div class="card-body">
+        <p class="text-xl italic text-green-800 text-center">
+          "What light through yonder window breaks? 'Tis the dawn of a greener Kochi, where nature and mankind dance in sweet harmony."
+        </p>
+      </div>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="prose prose-green max-w-none">
+      <h2 class="text-2xl font-serif text-green-700">Our Noble Quest</h2>
+      <p class="mb-8">
+        In this fair city of waters and ancient trade, we bear the torch of environmental stewardship. Like valiant knights of old, we have pledged ourselves to a cause most virtuous—to restore the natural glory of Kochi and preserve it for generations yet unborn.
+      </p>
+      
+      <h2 class="text-2xl font-serif text-green-700">The Tale of Our Beginning</h2>
+      <p class="mb-8">
+        In the year two thousand and fifteen, when pollution's dark clouds gathered o'er our beloved shores, a fellowship of kindred spirits convened. "Friends, Kochites, countrymen, lend me your ears," declared our founder, as visions of verdant canopies and crystalline waters danced in our collective imagination.
+      </p>
+      
+      <div class="alert bg-green-200 border-l-4 border-green-600 p-4 my-8">
+        <div class="flex">
+          <svg class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+          <span class="ml-3 text-green-700 italic">
+            "The earth hath bubbles, as the water has, and these are of them. Let us protect what heaven hath bestowed upon our fair city."
+          </span>
+        </div>
+      </div>
+      
+      <h2 class="text-2xl font-serif text-green-700">Our Sacred Principles</h2>
+      <p class="mb-4">
+        To thine own self be true, and it must follow, as the night the day, thou canst not then be false to any man—nor to the earth that sustains thee. We abide by principles most sacred:
+      </p>
+      
+      <ul class="menu bg-green-50 rounded-box p-2 mb-8">
+        <li><a class="hover:bg-green-100">To preserve the natural beauty of Kochi's waterways</a></li>
+        <li><a class="hover:bg-green-100">To cleanse the air of foul vapors that dim our azure skies</a></li>
+        <li><a class="hover:bg-green-100">To propagate knowledge of sustainable living</a></li>
+        <li><a class="hover:bg-green-100">To cultivate gardens where once stood concrete monuments</a></li>
+        <li><a class="hover:bg-green-100">To champion the cause of renewable energy</a></li>
+      </ul>
+      
+      <h2 class="text-2xl font-serif text-green-700">Our Valiant Endeavors</h2>
+      <p class="mb-6">
+        What dreams may come when we have shuffled off this mortal coil? Dreams of a Kochi reborn, where the backwaters shine like burnished silver and mangroves stand sentinel against the rising tides.
+      </p>
+      
+      <!-- Initiatives Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
+        <div class="card bg-white shadow-sm hover:shadow-md transition-shadow">
+          <div class="card-body p-4">
+            <h3 class="card-title text-green-700 text-lg font-serif">Waterway Restoration</h3>
+            <p class="text-sm">
+              "Full fathom five thy plastic lies." Our volunteers dive deep to retrieve man's discarded follies from the briny deep.
+            </p>
+          </div>
+        </div>
+        
+        <div class="card bg-white shadow-sm hover:shadow-md transition-shadow">
+          <div class="card-body p-4">
+            <h3 class="card-title text-green-700 text-lg font-serif">Urban Forest Initiative</h3>
+            <p class="text-sm">
+              "I know a bank where the wild thyme blows." Within our concrete jungle, we nurture pockets of verdant wonder.
+            </p>
+          </div>
+        </div>
+        
+        <div class="card bg-white shadow-sm hover:shadow-md transition-shadow">
+          <div class="card-body p-4">
+            <h3 class="card-title text-green-700 text-lg font-serif">Sustainable Marketplace</h3>
+            <p class="text-sm">
+              Our marketplace supports craftsmen who honor the earth with their methods and tread lightly upon the ground.
+            </p>
+          </div>
+        </div>
+      </div>
+      
+      <h2 class="text-2xl font-serif text-green-700">Join Our Noble Company</h2>
+      <p class="mb-4">
+        "Once more unto the breach, dear friends, once more!" The battle for Kochi's environmental future calls for stalwart hearts and willing hands.
+      </p>
+      
+      <p class="mb-8">
+        Whether thou art scholar or laborer, merchant or artist, there exists a place for thee in our fellowship. For as the Bard himself proclaimed, "We few, we happy few, we band of brothers" shall shape the destiny of our beloved home.
+      </p>
+      
+      <!-- Call to Action -->
+      <div class="flex flex-col sm:flex-row justify-center gap-4 mt-10">
+        <a href="" class="btn btn-primary bg-green-600 hover:bg-green-700 border-none">Join Our Noble Cause</a>
+        <a href="" class="btn btn-outline border-green-600 text-green-600 hover:bg-green-600 hover:text-white">Send a Messenger</a>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

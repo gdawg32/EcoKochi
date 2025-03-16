@@ -58,6 +58,10 @@ urlpatterns = [
     # System & Wards
     path('api/wards/', views.WardListView.as_view(), name='ward-list'),
 
+    # Get all collections (optionally filter by ?date=YYYY-MM-DD)
+    path('api/collector/collections/', views.SimpleCollectorCollectionsView.as_view(), name='simple-collector-collections'),
+
+
     # Waste Schedule Management (for Ward Manager)
     path('ward-manager-dashboard/schedules/', views.manage_schedules, name='manage_schedules'),
     path('ward-manager-dashboard/schedules/delete/<int:schedule_id>/', views.delete_schedule, name='delete_schedule'),
